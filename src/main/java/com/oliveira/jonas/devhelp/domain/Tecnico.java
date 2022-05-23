@@ -12,6 +12,8 @@ public class Tecnico extends Pessoa {
 	
 	
 	private static final long serialVersionUID = 1L;
+
+
 	
 	@OneToMany(mappedBy = "tecnico")
 	private List<Chamados> chamados = new ArrayList<>();
