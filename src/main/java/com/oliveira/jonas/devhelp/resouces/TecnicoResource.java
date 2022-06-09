@@ -1,6 +1,8 @@
 package com.oliveira.jonas.devhelp.resouces;
 
 import org.springframework.beans.factory.annotation.Autowired;
+
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -10,6 +12,13 @@ import org.springframework.web.bind.annotation.RestController;
 import com.oliveira.jonas.devhelp.domain.Tecnico;
 import com.oliveira.jonas.devhelp.domain.dtos.TecnicoDTO;
 import com.oliveira.jonas.devhelp.services.TecnicoService;
+
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+
+
 
 @RestController
 @RequestMapping(value = "tecnicos")
@@ -23,4 +32,16 @@ public class TecnicoResource {
 		Tecnico obj = service.findById(id);
 		return ResponseEntity.ok().body(new TecnicoDTO(obj));
 	}
+	
+	@GetMapping
+	public ResponseEntity<List<TecnicoDTO>> findAll() {
+		List<Tecnico> list = service.findAll();
+		List<TecnicoDTO> listDTO = list.stream().map(obj -> new TecnicoDTO(obj)).collect(Collectors.toList());
+		return ResponseEntity.ok().body(listDTO);
+	}
+	
+	
+	
+	
+	
 }
