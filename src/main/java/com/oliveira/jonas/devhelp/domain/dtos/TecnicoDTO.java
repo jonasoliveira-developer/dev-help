@@ -9,6 +9,7 @@ import java.util.stream.Collectors;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.oliveira.jonas.devhelp.domain.Tecnico;
@@ -20,9 +21,13 @@ public class TecnicoDTO implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	protected Integer id;
+	@NotNull(message = "O campo NOME é requrido!")
 	protected String nome;
+	@NotNull(message = "O campo CPF é requrido!")
 	protected String cpf;
+	@NotNull(message = "O campo E-EMAIL é requrido!")
 	protected String email;
+	@NotNull(message = "O campo SENHA é requrido!")
 	protected String senha;
 	protected Set<Integer> perfis = new HashSet<>();
 	
