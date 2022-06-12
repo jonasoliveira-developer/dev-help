@@ -30,39 +30,44 @@ public class TecnicoService {
 	}
 
 	public List<Tecnico> findAll() {
-		
+
 		return repository.findAll();
 	}
-	
-	
+
 	public Tecnico create(TecnicoDTO objDTO) {
 		objDTO.setId(null);
 		validaPorCpfEEmail(objDTO);
 		Tecnico newObj = new Tecnico(objDTO);
 		return repository.save(newObj);
 	}
-	
-	
+
 	public Tecnico update(Integer id, @Valid TecnicoDTO objDTO) {
 		objDTO.setId(id);
 		Tecnico oldObj = findById(id);
 		validaPorCpfEEmail(objDTO);
 		oldObj = new Tecnico(objDTO);
 		return repository.save(oldObj);
-		
+
 	}
-	
+
+	public void delete(Integer id) {
+
+		Tecnico obj = findById(id);
+		if(obj.getChamados().size() > 0) {
+			throw new DataIntegrationViolationException("Técnico possui ordens de serviço e não pode ser deletado!");	
+		}
+		repository.deleteById(id);
+	}
 
 	private void validaPorCpfEEmail(TecnicoDTO objDTO) {
 		Optional<Pessoa> obj = pessoaRepository.findByCpf(objDTO.getCpf());
-		if(obj.isPresent() && obj.get().getId() != objDTO.getId()) {
+		if (obj.isPresent() && obj.get().getId() != objDTO.getId()) {
 			throw new DataIntegrationViolationException("Cpf Já cadastrado no sistema!!");
 		}
 		obj = pessoaRepository.findByEmail(objDTO.getEmail());
-		if(obj.isPresent() && obj.get().getId() != objDTO.getId()) {
+		if (obj.isPresent() && obj.get().getId() != objDTO.getId()) {
 			throw new DataIntegrationViolationException("E-mail já cadastrado no sistema");
 		}
 	}
 
-	
 }
