@@ -4,6 +4,7 @@ import java.util.Optional;
 
 import javax.validation.Valid;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,6 +41,14 @@ public class ChamadoService {
 	public Chamados create(@Valid ChamadoDTO objDTO) {
 		return repository.save(newChamado(objDTO));
 	}
+	
+	public Chamados update( @Valid Integer id, ChamadoDTO objDTO) {
+		objDTO.setId(id);
+		Chamados oldObj = findById(id);
+		oldObj = newChamado(objDTO);
+		return repository.save(oldObj);
+	
+	}
 
 	private Chamados newChamado(ChamadoDTO obj) {
 
@@ -50,6 +59,10 @@ public class ChamadoService {
 		if (obj.getId() != null) {
 			chamados.setId(obj.getId());
 		}
+		
+		if (obj.getStatus().equals(2)) {
+			chamados.setDataFechamento(LocalDate.now());
+		}
 
 		chamados.setTecnico(tecnico);
 		chamados.setCliente(cliente);
@@ -59,5 +72,7 @@ public class ChamadoService {
 		chamados.setOrientacoes(obj.getOrientacoes());
 		return chamados;
 	}
+
+	
 
 }
