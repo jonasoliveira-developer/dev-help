@@ -8,6 +8,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.oliveira.jonas.devhelp.domain.Chamados;
@@ -24,11 +25,17 @@ public class ChamadoDTO implements Serializable {
 	private LocalDate dataAbertura = LocalDate.now();
 	@JsonFormat(pattern = "dd/MM/yyyy")
 	private LocalDate dataFechamento;
+	@NotNull(message = "O campo PRIORIDADE é requerido!")
 	private Integer prioridade;
-	private Status status;
+	@NotNull(message = "O campo STATUS é requerido!")
+	private Integer status;
+	@NotNull(message = "O campo TITULO é requerido!")
 	private String titulo;
+	@NotNull(message = "O campo ORIENTAÇÕES é requerido!")
 	private String orientacoes;
+	@NotNull(message = "O campo TÉCNICO é requerido!")
 	private Integer tecnico;
+	@NotNull(message = "O campo CLIENTE é requerido!")
 	private Integer cliente;
 
 	private String nomeTecnico;
@@ -41,12 +48,12 @@ public class ChamadoDTO implements Serializable {
 
 	public ChamadoDTO(Chamados obj) {
 		super();
-		
+
 		this.id = obj.getId();
 		this.dataAbertura = obj.getDataAbertura();
 		this.dataFechamento = obj.getDataFechamento();
 		this.prioridade = obj.getPrioridade().getCodigo();
-		this.status = obj.getStatus();
+		this.status = obj.getStatus().getCodigo();
 		this.titulo = obj.getTitulo();
 		this.orientacoes = obj.getOrientacoes();
 		this.tecnico = obj.getTecnico().getId();
@@ -87,11 +94,11 @@ public class ChamadoDTO implements Serializable {
 		this.prioridade = prioridade;
 	}
 
-	public Status getStatus() {
+	public Integer getStatus() {
 		return status;
 	}
 
-	public void setStatus(Status status) {
+	public void setStatus(Integer status) {
 		this.status = status;
 	}
 
